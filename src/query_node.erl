@@ -1,7 +1,7 @@
 %%
 %% Query Node
 %%
-%% @copyright 2015-2016 UP FAMNIT and Yahoo Japan Corporation
+%% @copyright 2015-2019 UP FAMNIT and Yahoo Japan Corporation
 %% @version 0.3
 %% @since September, 2015
 %% @author Iztok Savnik <iztok.savnik@famnit.upr.si>
@@ -104,10 +104,16 @@
 %% The side of query node is its position in relation to parent.
 %%
 
-
 -module(query_node).
 -export(
    [
+    queue_prepared/1,
+    eval_project/1,
+    project_prepare/1,
+    difference_lists/2,
+    eval_attribute/1,
+    eval_select/1,
+    queue_block_end/1
    ]).
 -include_lib("eunit/include/eunit.hrl").
 
@@ -199,10 +205,6 @@ queue_empty(Queue) ->
     Res = queue:is_empty(get(Q)) and (get(B) =:= []),
     info_msg(queue_empty, [get(self), {queue,Queue}, {B, get(B)}, {Q, get(Q)}, {return,Res}, get(state)], check_empty, 50),
     Res.
-
-%%queue_empty(Queue) -> 
-%%  error_msg(queue_empty, [get(self), {queue,Queue}, {all,get()}, get(state)], wrong_queue),
-%%  fail.
 
 %% 
 %% @doc Check if queue Queue incudes messages prepared to be read from or 
